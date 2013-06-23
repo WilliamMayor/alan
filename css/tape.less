@@ -1,0 +1,62 @@
+#tape {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+
+    border-top: 1px solid @border-color;
+
+    white-space: nowrap;
+    overflow-x: auto;
+
+    ul {
+        margin: 0;
+        padding: 0;
+        display: inline;
+        li {
+            list-style: none;
+            display: inline;
+            input {
+                width: 2em;
+                height: 2em;
+                padding: 5px;
+                font-size: 2em;
+                margin: 0.5em 10px;
+                text-align: center;
+
+                border: 1px solid @border-color;
+
+                &:focus {
+                    outline: none;
+                    border: 1px solid @highlight-color;
+                }
+
+                &.active-true {
+                    background-color: green;
+                }
+                &.editing-true {
+                    background-color: yellow;
+                }
+                &.editable-true {
+                    cursor: pointer;
+                }
+            }
+        }
+
+        &.alphabet {
+            position: fixed;
+            bottom: 150px;
+            width: 100%;
+            text-align: center;
+
+            a {
+                width: 1em;
+                height: 1em;
+                padding: 3px;
+                font-size: 1em;
+                margin: 0.5em 10px;
+                border: 1px solid @border-color;
+                display: inline-block;
+            }
+        }
+    }
+}
