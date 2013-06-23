@@ -1,6 +1,14 @@
 #alphabet {
   border-bottom: 1px solid @border-color;
 
+  position: absolute;
+  top: 0;
+  height: @states-top - 1;
+  width: 100%;
+
+  white-space: nowrap;
+  overflow-x: auto;
+
   ul {
     margin: 0;
     padding: 0;
@@ -28,8 +36,7 @@
       }
     }
   }
-
-  button {
-    padding: 3px;
+  a {
+    margin: 0 10px;
   }
 }

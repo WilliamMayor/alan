@@ -35,13 +35,16 @@ app.run(function($rootScope) {
     rs.alphabet = [];
     rs.nodes = [];
     rs.tape = [{"character": rs.symbols.EOT, "active": false, "editable": false}];
-    for (var i = 1; i < 21; i++) {
+    for (var i = 0; i < 20; i++) {
         rs.tape.push({"character": rs.symbols.BLANK, "active": false, "editable": true});
     }
     rs.states = [];
 
     rs.alphabet.push({"value": "0", "used": true, "valid": true});
     rs.alphabet.push({"value": "1", "used": true, "valid": true});
+    for (i = 0; i < 50; i++) {
+        rs.alphabet.push({"value": "", "used": false, "valid": true});
+    }
     rs.tape[1] = {"character": rs.alphabet[1], "active": true, "editable": true};
     rs.tape[2] = {"character": rs.alphabet[1], "active": false, "editable": true};
     rs.tape[3] = {"character": rs.alphabet[1], "active": false, "editable": true};

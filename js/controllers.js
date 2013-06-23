@@ -12,12 +12,14 @@ function AlphabetCtrl($scope, $timeout) {
         }
         c["valid"] = true;
     };
-    $scope.addcharacter = function() {
-        $scope.alphabet.push({
-            "value": "",
-            "used": false,
-            "valid": true
-        });
+    $scope.morecharacters = function() {
+        for (var i = 0; i < 5; i++ ) {
+            $scope.alphabet.push({
+                "value": "",
+                "used": false,
+                "valid": true
+            });
+        }
     };
 }
 function StateCtrl($scope, $rootScope) {
@@ -55,8 +57,8 @@ function StateCtrl($scope, $rootScope) {
 }
 function TapeCtrl($scope, $rootScope) {
     $scope.showalphabet = false;
-    $scope.loadmore = function() {
-        for (var i = 1; i < 21; i++) {
+    $scope.moretape = function() {
+        for (var i = 0; i < 5; i++) {
             $scope.tape.push({"character": $scope.symbols.BLANK, "active": false, "editable": true});
         }
     };

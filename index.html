@@ -12,7 +12,7 @@
       <li ng-repeat="c in alphabet">
         <input type="text" class="invalid-{{ !c.valid }}" ng-model="c.value" ng-change="validate(c)" />
       </li>
-      <li><a href="" ng-click="addcharacter()">Add Character</a></li>
+      <li><a href="" ng-click="morecharacters()">More Characters</a></li>
     </ul>
   </div>
   <div id="states" ng-controller="StateCtrl">
@@ -28,7 +28,7 @@
       <li ng-repeat="c in tape" ng-click="edit(c)">
         <input type="text" class="active-{{ c.active }} editable-{{ c.editable }} editing-{{ c.editing }}" ng-model="c.character.value" disabled />
       </li>
-      <li><a href="" ng-click="loadmore()">Load More</a></li>
+      <li><a href="" ng-click="moretape()">More Tape</a></li>
     </ul>
   </div>
 
