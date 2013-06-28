@@ -2,24 +2,7 @@
 
 
 // Declare app level module which depends on filters, and services
-var app = angular.module('alan', []).directive( [ 'focus', 'blur', 'keyup', 'keydown', 'keypress' ].reduce( function ( container, name ) {
-    var directiveName = 'ng' + name[ 0 ].toUpperCase( ) + name.substr( 1 );
-
-    container[ directiveName ] = [ '$parse', function ( $parse ) {
-        return function ( scope, element, attr ) {
-            var fn = $parse( attr[ directiveName ] );
-            element.bind( name, function ( event ) {
-                scope.$apply( function ( ) {
-                    fn( scope, {
-                        $event : event
-                    } );
-                } );
-            } );
-        };
-    } ];
-
-    return container;
-}, { } ) );
+var app = angular.module('alan', ['alan.directives', 'alan.filters']);
 
 app.run(function($rootScope) {
     $rootScope.log = function(l) {
