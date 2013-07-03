@@ -28,7 +28,7 @@
       <li ng-repeat="c in tape" ng-click="edit(c)">
         <input type="text" class="active-{{ c.active }} editable-{{ c.editable }} editing-{{ c.editing }}" ng-model="c.character.value" disabled />
       </li>
-      <li><a href="" ng-click="moretape()">More Tape</a></li>
+      <li><a href="" class="more" ng-click="moretape()">More Tape</a></li>
     </ul>
   </div>
 
