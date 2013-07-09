@@ -16,133 +16,151 @@ app.run(function($rootScope) {
     rs.symbols = {BLANK: {"value": ""}, EOT: {"value": ">"}};
 
     rs.alphabet = [];
-    rs.nodes = [];
+    rs.nodes = {};
     rs.tape = [{"character": rs.symbols.EOT, "active": false, "editable": false}];
     for (var i = 0; i < 20; i++) {
         rs.tape.push({"character": rs.symbols.BLANK, "active": false, "editable": true});
     }
     rs.states = [];
 
-    rs.alphabet.push({"value": "0", "used": true, "valid": true});
-    rs.alphabet.push({"value": "1", "used": true, "valid": true});
-    for (i = 0; i < 50; i++) {
-        rs.alphabet.push({"value": "", "used": false, "valid": true});
-    }
+    
     rs.tape[1] = {"character": rs.alphabet[1], "active": true, "editable": true};
-    rs.tape[2] = {"character": rs.alphabet[1], "active": false, "editable": true};
+    rs.tape[2] = {"character": rs.alphabet[0], "active": false, "editable": true};
     rs.tape[3] = {"character": rs.alphabet[1], "active": false, "editable": true};
     rs.tape[4] = {"character": rs.alphabet[1], "active": false, "editable": true};
 
     var n7 = {
         "transitions": [],
         "halt": true,
-        "active": false
+        "active": false,
+        "x": 400,
+        "y": 100,
+        "loop": {"x": 0, "y": 0}
     };
     var n3 = {
         "transitions": [{
             "read": rs.alphabet[0],
             "write": rs.alphabet[0],
             "move": rs.directions.LEFT,
-            "state": null
+            "node": "3"
         }, {
             "read": rs.alphabet[1],
             "write": rs.alphabet[1],
             "move": rs.directions.LEFT,
-            "state": null
+            "node": "3"
         }, {
             "read": rs.symbols.EOT,
             "write": rs.symbols.EOT,
             "move": rs.directions.RIGHT,
-            "state": n7
+            "node": "7"
         }],
         "halt": false,
-        "active": false
+        "active": false,
+        "x": 300,
+        "y": 100,
+        "loop": {"x": 300, "y": 10}
     };
-    n3["transitions"][0]["state"] = n3;
-    n3["transitions"][1]["state"] = n3;
     var n6 = {
         "transitions": [{
             "read": rs.alphabet[0],
             "write": rs.alphabet[0],
             "move": rs.directions.RIGHT,
-            "state": null
+            "node": "6"
         }, {
             "read": rs.symbols.BLANK,
             "write": rs.alphabet[0],
             "move": rs.directions.LEFT,
-            "state": n3
+            "node": "3"
         }],
         "halt": false,
-        "active": false
+        "active": false,
+        "x": 400,
+        "y": 200,
+        "loop": {"x": 400, "y": 300}
     };
-    n6["transitions"][0]["state"] = n6;
     var n5 = {
         "transitions": [{
             "read": rs.alphabet[0],
             "write": rs.alphabet[1],
             "move": rs.directions.RIGHT,
-            "state": n6
+            "node": "6"
         }],
         "halt": false,
-        "active": false
+        "active": false,
+        "x": 300,
+        "y": 200,
+        "loop": {"x": 0, "y": 0}
     };
     var n4 = {
         "transitions": [{
             "read": rs.alphabet[0],
             "write": rs.alphabet[1],
             "move": rs.directions.LEFT,
-            "state": n3
+            "node": "3"
         }, {
             "read": rs.alphabet[1],
             "write": rs.alphabet[0],
             "move": rs.directions.LEFT,
-            "state": null
+            "node": "4"
         }, {
             "read": rs.symbols.EOT,
             "write": rs.symbols.EOT,
             "move": rs.directions.RIGHT,
-            "state": n5
+            "node": "5"
         }],
         "halt": false,
-        "active": false
+        "active": false,
+        "x": 200,
+        "y": 200,
+        "loop": {"x": 200, "y": 300}
     };
-    n4["transitions"][1]["state"] = n4;
     var n2 = {
         "transitions": [{
             "read": rs.alphabet[0],
             "write": rs.alphabet[1],
             "move": rs.directions.LEFT,
-            "state": n3
+            "node": "3"
         }, {
             "read": rs.alphabet[1],
             "write": rs.alphabet[0],
             "move": rs.directions.LEFT,
-            "state": n4
+            "node": "4"
         }],
         "halt": false,
-        "active": false
+        "active": false,
+        "x": 200,
+        "y": 100,
+        "loop": {"x": 0, "y": 0}
     };
     var n1 = {
         "transitions": [{
             "read": rs.alphabet[0],
             "write": rs.alphabet[0],
             "move": rs.directions.RIGHT,
-            "state": null
+            "node": "1"
         }, {
             "read": rs.alphabet[1],
             "write": rs.alphabet[1],
             "move": rs.directions.RIGHT,
-            "state": null
+            "node": "1"
         }, {
             "read": rs.symbols.BLANK,
             "write": rs.symbols.BLANK,
             "move": rs.directions.LEFT,
-            "state": n2
+            "node": "2"
         }],
         "halt": false,
-        "active": true
+        "active": true,
+        "x": 100,
+        "y": 100,
+        "loop": {"x": 100, "y": 200}
     };
-    n1["transitions"][0]["state"] = n1;
-    n1["transitions"][1]["state"] = n1;
-    rs.nodes.push(n1, n2, n3, n4, n5, n6, n7);
+
+    rs.nodes['1'] = n1;
+    rs.nodes['2'] = n2;
+    rs.nodes['3'] = n3;
+    rs.nodes['4'] = n4;
+    rs.nodes['5'] = n5;
+    rs.nodes['6'] = n6;
+    rs.nodes['7'] = n7;
 });

@@ -1,13 +1,7 @@
 #alphabet {
   border-bottom: 1px solid @border-color;
 
-  position: absolute;
-  top: 0;
-  height: @states-top - 1;
   width: 100%;
-
-  white-space: nowrap;
-  overflow-x: auto;
 
   ul {
     margin: 0;
@@ -37,6 +31,13 @@
     }
   }
   a {
-    margin: 0 10px;
+    display: inline-block;
+    width: 1em;
+    height: 1em;
+    padding: 3px;
+    margin: 0.5em 10px;
+    text-align: center;
+    text-decoration: none;
+    border: 1px solid @border-color;
   }
 }
