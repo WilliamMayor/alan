@@ -42,8 +42,7 @@ function StateCtrl($scope, $rootScope) {
                 if (i === $rootScope.tape.length-1) {
                     $rootScope.tape.push({
                         "character": $rootScope.symbols.BLANK,
-                        "active": true,
-                        "editable": true
+                        "active": true
                     });
                 } else {
                     $rootScope.tape[i+1]["active"] = true;
@@ -57,9 +56,14 @@ function StateCtrl($scope, $rootScope) {
 }
 function TapeCtrl($scope, $rootScope) {
     $scope.showalphabet = false;
-    $scope.moretape = function() {
-        for (var i = 0; i < 5; i++) {
-            $scope.tape.push({"character": $scope.symbols.BLANK, "active": false, "editable": true});
+    $scope.active = 10;
+    $scope.doc = document;
+    $scope.moretape = function(toLeft) {
+        if (toLeft === true) {
+            $scope.tape.unshift({"character": $scope.symbols.BLANK});
+            $scope.active++;
+        } else {
+            $scope.tape.push({"character": $scope.symbols.BLANK});
         }
     };
     $scope.characterselected = function(c) {
@@ -72,9 +76,48 @@ function TapeCtrl($scope, $rootScope) {
         $scope.showalphabet = false;
     };
     $scope.edit = function(cell) {
-        if (cell.editable) {
-            cell.editing = true;
-            $scope.showalphabet = true;
+        $scope.showalphabet = true;
+        cell.editing = true;
+    };
+    $scope.forward = function() {
+        $scope.active++;
+    };
+    $scope.back = function() {
+        $scope.active--;
+    };
+    $scope.rewind = function() {
+        for (var i=0; i<$scope.tape.length; i++) {
+            if ($scope.tape[i].character !== $scope.symbols.BLANK) {
+                if ($scope.active > i) {
+                    $scope.active = i;
+                }
+                return;
+            }
         }
     };
+    $scope.fastforward = function() {
+        for (var i=$scope.tape.length-1; i>=0; i--) {
+            if ($scope.tape[i].character !== $scope.symbols.BLANK) {
+                if ($scope.active < i) {
+                    $scope.active = i;
+                }
+                return;
+            }
+        }
+    };
+}
+function SelectorCtrl($scope, $rootScope) {
+    $rootScope.showSelector = false;
+    $scope.hide = function() {
+        $rootScope.showSelector = false;
+        $rootScope.editable = null;
+    }
+    $scope.show = function() {
+        $rootScope.showSelector = true;
+    }
+    $scope.select = function(value) {
+        $rootScope.editable.update(value);
+        $rootScope.showSelector = false;
+        return false;
+    }
 }

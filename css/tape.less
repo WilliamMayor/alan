@@ -1,15 +1,27 @@
 #tape {
-    position: absolute;
-    bottom: 0;
-    height: @states-bottom - 1;
     width: 100%;
 
     border-top: 1px solid @border-color;
 
     white-space: nowrap;
-    overflow-x: auto;
+    overflow: hidden;
 
-    ul {
+    ul.controls {
+        position: absolute;
+        bottom: @states-bottom;
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        text-align: center;
+        list-style: none;
+
+        li {
+            display: inline-block;
+            width: 40px;
+        }
+    }
+
+    ul.cells {
         margin: 0;
         padding: 0;
         display: inline;
@@ -25,40 +37,6 @@
                 text-align: center;
 
                 border: 1px solid @border-color;
-
-                &:focus {
-                    outline: none;
-                    border: 1px solid @highlight-color;
-                }
-
-                &.active-true {
-                    background-color: green;
-                }
-                &.editing-true {
-                    background-color: yellow;
-                }
-                &.editable-true {
-                    cursor: pointer;
-                }
-            }
-        }
-
-        &.alphabet {
-            position: fixed;
-            bottom: @states-bottom + 1;
-            width: 100%;
-            text-align: center;
-
-            border-top: 1px solid @border-color;
-
-            a {
-                width: 1em;
-                height: 1em;
-                padding: 3px;
-                font-size: 1em;
-                margin: 0.5em 10px;
-                border: 1px solid @border-color;
-                display: inline-block;
             }
         }
     }

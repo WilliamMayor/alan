@@ -4,34 +4,53 @@
   <meta charset="utf-8">
   <title>alan | A Turing machine in your browser</title>
   <link href="/css/normalize.css" rel="stylesheet" media="screen" />
-  <link href="/css/app.less" rel="stylesheet/less" type="text/css" />
+  <link href="/css/app.less?v=5" rel="stylesheet/less" type="text/css" />
 </head>
-<body>
-  <div id="alphabet" ng-controller="AlphabetCtrl">
+<body ng-mousemove="mousemove($event)">
+  <div id="wrapper">
+    <div id="alphabet" ng-controller="AlphabetCtrl">
+      <ul>
+        <li ng-repeat="c in alphabet">
+          <input type="text" class="invalid-{{ !c.valid }}" ng-model="c.value" ng-change="validate(c)" />
+        </li>
+        <li><a href="" ng-click="morecharacters()">More Characters</a></li>
+      </ul>
+    </div>
+    <div id="states" ng-controller="StateCtrl">
+      <button ng-click="step()" ng-disabled="halt" >Step</button>
+    </div>
+    <div class="push"></div>
+  </div>
+  <div id="tape" ng-controller="TapeCtrl" scrollleft="{{ active * 100 - doc.width / 2 + 50 }}" left="moretape(true)" right="moretape(false)">
+    <ul class="controls">
+      <li><a href="" ng-click="rewind()">|&lt;&lt;</a></li>
+      <li><a href="" ng-click="back()">&lt;</a></li>
+      <li>\/</li>
+      <li><a href="" ng-click="forward()">&gt;</a></li>
+      <li><a href="" ng-click="fastforward()">&gt;&gt;|</a></li>
+    </ul>
+    <ul class="cells">
+      <li class="cell" ng-repeat="cell in tape">
+        <input type="text" ng-model="cell.character.value" ng-mouseenter="cellEdit(cell)" />
+      </li>
+    </ul>
+  </div>
+  <div id="selector" ng-controller="SelectorCtrl" ng-show="showSelector" ng-mouseleave="hide()" movetomouse="{{ showSelector }}">
     <ul>
-      <li ng-repeat="c in alphabet">
-        <input type="text" class="invalid-{{ !c.valid }}" ng-model="c.value" ng-change="validate(c)" />
+      <li ng-repeat="char in alphabet | notempty">
+        <a href="#{{ char.value }}" ng-click="select(char)" eat-click>{{ char.value }}</a>
       </li>
-      <li><a href="" ng-click="morecharacters()">More Characters</a></li>
-    </ul>
-  </div>
-  <div id="states" ng-controller="StateCtrl">
-    <button ng-click="step()" ng-disabled="halt" >Step</button>
-  </div>
-  <div id="tape" ng-controller="TapeCtrl">
-    <ul class="alphabet" ng-show="showalphabet">
-      <li ng-repeat="c in alphabet | notempty | addblank">
-        <a href="" ng-click="characterselected(c)">{{ c.value | nbsp }}</a>
+      <li>
+        <a href="#{{ symbols.BLANK.value }}" ng-click="select(symbols.BLANK)" eat-click>{{ symbols.BLANK.value }}</a>
+      </li>
+      <li ng-show="withDirections">
+        <a href="#{{ directions.LEFT.value }}" ng-click="select(directions.LEFT)" eat-click>{{ directions.LEFT.value }}</a>
+      </li>
+      <li ng-show="withDirections">
+        <a href="#{{ directions.RIGHT.value }}" ng-click="select(directions.RIGHT)" eat-click>{{ directions.RIGHT.value }}</a>
       </li>
     </ul>
-    <ul>
-      <li ng-repeat="c in tape" ng-click="edit(c)">
-        <input type="text" class="active-{{ c.active }} editable-{{ c.editable }} editing-{{ c.editing }}" ng-model="c.character.value" disabled />
-      </li>
-      <li><a href="" ng-click="moretape()">More Tape</a></li>
-    </ul>
   </div>
-
   <!-- In production use:
   <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js"></script>
   -->

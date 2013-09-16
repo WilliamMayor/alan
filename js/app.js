@@ -1,148 +1,62 @@
 'use strict';
 
+function Character(value) {
+    this.value = value;
+    this.valid = true;
+}
+
+function Cell(character) {
+    this.character = character;
+}
+Cell.prototype.update = function(character) {
+    this.character = character;
+}
 
 // Declare app level module which depends on filters, and services
 var app = angular.module('alan', ['alan.directives', 'alan.filters']);
 
 app.run(function($rootScope) {
-    $rootScope.log = function(l) {
+
+    var rs = $rootScope;
+    rs.Character = Character;
+    rs.Cell = Cell;
+
+    rs.log = function(l) {
         console.log(l);
     };
-    var rs = $rootScope;
 
     rs.doc = window.document;
 
-    rs.directions = {LEFT: "left", RIGHT: "right"};
-    rs.symbols = {BLANK: {"value": ""}, EOT: {"value": ">"}};
+    rs.directions = {LEFT: new Character("\u21FD"), RIGHT: new Character("\u21FE")};
+    rs.symbols = {BLANK: new Character("\u00A0")};
 
     rs.alphabet = [];
     rs.nodes = [];
-    rs.tape = [{"character": rs.symbols.EOT, "active": false, "editable": false}];
-    for (var i = 0; i < 20; i++) {
-        rs.tape.push({"character": rs.symbols.BLANK, "active": false, "editable": true});
-    }
+    rs.tape = [];
     rs.states = [];
 
-    rs.alphabet.push({"value": "0", "used": true, "valid": true});
-    rs.alphabet.push({"value": "1", "used": true, "valid": true});
-    for (i = 0; i < 50; i++) {
-        rs.alphabet.push({"value": "", "used": false, "valid": true});
-    }
-    rs.tape[1] = {"character": rs.alphabet[1], "active": true, "editable": true};
-    rs.tape[2] = {"character": rs.alphabet[1], "active": false, "editable": true};
-    rs.tape[3] = {"character": rs.alphabet[1], "active": false, "editable": true};
-    rs.tape[4] = {"character": rs.alphabet[1], "active": false, "editable": true};
+    rs.alphabet.push(new Character("0"));
+    rs.alphabet.push(new Character("1"));
 
-    var n7 = {
-        "transitions": [],
-        "halt": true,
-        "active": false
-    };
-    var n3 = {
-        "transitions": [{
-            "read": rs.alphabet[0],
-            "write": rs.alphabet[0],
-            "move": rs.directions.LEFT,
-            "state": null
-        }, {
-            "read": rs.alphabet[1],
-            "write": rs.alphabet[1],
-            "move": rs.directions.LEFT,
-            "state": null
-        }, {
-            "read": rs.symbols.EOT,
-            "write": rs.symbols.EOT,
-            "move": rs.directions.RIGHT,
-            "state": n7
-        }],
-        "halt": false,
-        "active": false
-    };
-    n3["transitions"][0]["state"] = n3;
-    n3["transitions"][1]["state"] = n3;
-    var n6 = {
-        "transitions": [{
-            "read": rs.alphabet[0],
-            "write": rs.alphabet[0],
-            "move": rs.directions.RIGHT,
-            "state": null
-        }, {
-            "read": rs.symbols.BLANK,
-            "write": rs.alphabet[0],
-            "move": rs.directions.LEFT,
-            "state": n3
-        }],
-        "halt": false,
-        "active": false
-    };
-    n6["transitions"][0]["state"] = n6;
-    var n5 = {
-        "transitions": [{
-            "read": rs.alphabet[0],
-            "write": rs.alphabet[1],
-            "move": rs.directions.RIGHT,
-            "state": n6
-        }],
-        "halt": false,
-        "active": false
-    };
-    var n4 = {
-        "transitions": [{
-            "read": rs.alphabet[0],
-            "write": rs.alphabet[1],
-            "move": rs.directions.LEFT,
-            "state": n3
-        }, {
-            "read": rs.alphabet[1],
-            "write": rs.alphabet[0],
-            "move": rs.directions.LEFT,
-            "state": null
-        }, {
-            "read": rs.symbols.EOT,
-            "write": rs.symbols.EOT,
-            "move": rs.directions.RIGHT,
-            "state": n5
-        }],
-        "halt": false,
-        "active": false
-    };
-    n4["transitions"][1]["state"] = n4;
-    var n2 = {
-        "transitions": [{
-            "read": rs.alphabet[0],
-            "write": rs.alphabet[1],
-            "move": rs.directions.LEFT,
-            "state": n3
-        }, {
-            "read": rs.alphabet[1],
-            "write": rs.alphabet[0],
-            "move": rs.directions.LEFT,
-            "state": n4
-        }],
-        "halt": false,
-        "active": false
-    };
-    var n1 = {
-        "transitions": [{
-            "read": rs.alphabet[0],
-            "write": rs.alphabet[0],
-            "move": rs.directions.RIGHT,
-            "state": null
-        }, {
-            "read": rs.alphabet[1],
-            "write": rs.alphabet[1],
-            "move": rs.directions.RIGHT,
-            "state": null
-        }, {
-            "read": rs.symbols.BLANK,
-            "write": rs.symbols.BLANK,
-            "move": rs.directions.LEFT,
-            "state": n2
-        }],
-        "halt": false,
-        "active": true
-    };
-    n1["transitions"][0]["state"] = n1;
-    n1["transitions"][1]["state"] = n1;
-    rs.nodes.push(n1, n2, n3, n4, n5, n6, n7);
+    rs.mousemove = function(e) {
+        rs.mouseX = event.pageX;
+        rs.mouseY = event.pageY;
+    }
+
+    rs.cellEdit = function(editable) {
+        rs.editable = editable;
+        rs.withDirections = false;
+        rs.showSelector = true;
+    }
+    
+    for (var i=0; i<10; i++) {
+        rs.tape.push(new Cell(rs.symbols.BLANK));
+    }
+    rs.tape.push(new Cell(rs.alphabet[1]));
+    rs.tape.push(new Cell(rs.alphabet[1]));
+    rs.tape.push(new Cell(rs.alphabet[1]));
+    rs.tape.push(new Cell(rs.alphabet[1]));
+    for (var i=0; i<10; i++) {
+        rs.tape.push(new Cell(rs.symbols.BLANK));
+    }
 });
