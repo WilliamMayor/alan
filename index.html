@@ -13,8 +13,8 @@
         <li ng-repeat="c in alphabet">
           <input type="text" class="invalid-{{ !c.valid }}" ng-model="c.value" ng-change="validate(c)" />
         </li>
-        <li><a href="" ng-click="morecharacters()">More Characters</a></li>
       </ul>
+      <a href="" ng-click="morecharacters()">More Characters</a>
     </div>
     <div id="states" ng-controller="StateCtrl">
       <button ng-click="step()" ng-disabled="halt" >Step</button>
