@@ -55,7 +55,6 @@ function StateCtrl($scope, $rootScope) {
     };
 }
 function TapeCtrl($scope, $rootScope) {
-    $scope.showalphabet = false;
     $scope.active = 10;
     $scope.doc = document;
     $scope.moretape = function(toLeft) {
@@ -66,18 +65,8 @@ function TapeCtrl($scope, $rootScope) {
             $scope.tape.push({"character": $scope.symbols.BLANK});
         }
     };
-    $scope.characterselected = function(c) {
-        for (var i=0; i < $scope.tape.length; i++) {
-            if ($scope.tape[i].editing) {
-                $scope.tape[i].character = c;
-                $scope.tape[i].editing = false;
-            }
-        }
-        $scope.showalphabet = false;
-    };
     $scope.edit = function(cell) {
-        $scope.showalphabet = true;
-        cell.editing = true;
+        $rootScope.$broadcast('tape-edit', cell);
     };
     $scope.forward = function() {
         $scope.active++;
@@ -107,17 +96,27 @@ function TapeCtrl($scope, $rootScope) {
     };
 }
 function SelectorCtrl($scope, $rootScope) {
-    $rootScope.showSelector = false;
     $scope.hide = function() {
-        $rootScope.showSelector = false;
-        $rootScope.editable = null;
-    }
-    $scope.show = function() {
-        $rootScope.showSelector = true;
+        $scope.show = false;
     }
     $scope.select = function(value) {
-        $rootScope.editable.update(value);
-        $rootScope.showSelector = false;
-        return false;
+        $scope.previous = $scope.editable;
+        $scope.hide();
+        if ($scope.editable !== null) {
+            $scope.editable.update(value);
+        }
+        setTimeout(function() {
+            $scope.previous = null;
+        }, 1000);
     }
+    $rootScope.$on('tape-edit', function(event, cell) {
+        if ($scope.previous !== cell) {
+            $scope.editable = cell;
+            $scope.show = true;
+        }
+    });
+    $scope.doc = document;
+    $scope.hide();
+    $scope.editable = null;
+    $scope.previous = null;
 }

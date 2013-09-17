@@ -6,7 +6,7 @@
   <link href="/css/normalize.css" rel="stylesheet" media="screen" />
   <link href="/css/app.less?v=5" rel="stylesheet/less" type="text/css" />
 </head>
-<body ng-mousemove="mousemove($event)">
+<body>
   <div id="wrapper">
     <div id="alphabet" ng-controller="AlphabetCtrl">
       <ul>
@@ -30,24 +30,18 @@
       <li><a href="" ng-click="fastforward()">&gt;&gt;|</a></li>
     </ul>
     <ul class="cells">
-      <li class="cell" ng-repeat="cell in tape">
-        <input type="text" ng-model="cell.character.value" ng-mouseenter="cellEdit(cell)" />
+      <li class="cell" ng-repeat="cell in tape | replaceempty">
+        <input type="text" ng-model="cell.character.value" selectorpopup="edit(cell)" readonly />
       </li>
     </ul>
   </div>
-  <div id="selector" ng-controller="SelectorCtrl" ng-show="showSelector" ng-mouseleave="hide()" movetomouse="{{ showSelector }}">
+  <div id="selector" ng-controller="SelectorCtrl" ng-show="show" ng-mouseleave="hide()">
     <ul>
       <li ng-repeat="char in alphabet | notempty">
         <a href="#{{ char.value }}" ng-click="select(char)" eat-click>{{ char.value }}</a>
       </li>
       <li>
         <a href="#{{ symbols.BLANK.value }}" ng-click="select(symbols.BLANK)" eat-click>{{ symbols.BLANK.value }}</a>
-      </li>
-      <li ng-show="withDirections">
-        <a href="#{{ directions.LEFT.value }}" ng-click="select(directions.LEFT)" eat-click>{{ directions.LEFT.value }}</a>
-      </li>
-      <li ng-show="withDirections">
-        <a href="#{{ directions.RIGHT.value }}" ng-click="select(directions.RIGHT)" eat-click>{{ directions.RIGHT.value }}</a>
       </li>
     </ul>
   </div>

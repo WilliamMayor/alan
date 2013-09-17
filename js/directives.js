@@ -22,6 +22,14 @@ angular.module('alan.directives', []).directive(['focus', 'blur', 'keyup', 'keyd
             elm[0].scrollLeft = attr.scrollleft; 
         });
     };
+}).directive('selectorpopup', function() {
+    return function(scope, elm, attr) {
+        elm.bind('mouseenter', function() {
+            var s = document.querySelector("#selector");
+            s.style.left = elm[0].getBoundingClientRect().left + "px";
+            scope.$apply(attr.selectorpopup);
+        });
+    };
 }).directive('left', function() {
     return function(scope, elm, attr) {
         elm.bind('scroll', function(event) {
@@ -35,15 +43,6 @@ angular.module('alan.directives', []).directive(['focus', 'blur', 'keyup', 'keyd
         elm.bind('scroll', function(event) {
             if (elm[0].scrollWidth - elm[0].scrollLeft - elm[0].offsetWidth <= 100) {
                 scope.$apply(attr.right);
-            }
-        });
-    };
-}).directive('movetomouse', function() {
-    return function(scope, elm, attr) {
-        attr.$observe('movetomouse', function(value) {
-            if (value === 'true' || value === true) {
-                elm[0].style.top = (scope.mouseY - 80) + "px";
-                elm[0].style.left = (scope.mouseX - 37) + "px";
             }
         });
     };
