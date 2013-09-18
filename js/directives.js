@@ -40,14 +40,34 @@ angular.module('alan.directives', []).directive('alScrollLeft', function() {
             a_expand.css("visibility", "hidden");
             elm.prepend(a_collapse);
             elm.append(a_expand);
-            a_collapse.bind('click', function() {
+            a_collapse.bind('click', function(event) {
                 elm.css("visibility", "hidden");
                 a_expand.css("visibility", "visible");
+                event.preventDefault();
             });
-            a_expand.bind('click', function() {
+            a_expand.bind('click', function(event) {
                 elm.css("visibility", "visible");
                 a_expand.css("visibility", "hidden");
+                event.preventDefault();
             });
         }, 100);
+    }
+}).directive('alDraggable', function() {
+    return function(scope, elm, attr) {
+        elm.bind("drag", function(event) {
+            console.log(event);
+            switch (attr.alDraggable) {
+                case "top":
+                    if (event.pageY !== 0) {
+                        elm.css("top", event.pageY + "px");
+                    }
+                    break;
+                case "bottom":
+                    if (event.pageY !== 0) {
+                        elm.css("bottom", (document.height - event.pageY) + "px");
+                    }
+                    break;
+            }
+        });
     }
 });

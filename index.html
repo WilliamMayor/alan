@@ -7,7 +7,7 @@
     <link href="/css/app.less?v=7" rel="stylesheet/less" type="text/css" />
 </head>
 <body>
-    <div id="alphabet" ng-controller="AlphabetCtrl" al-collapsable>
+    <div id="alphabet" ng-controller="AlphabetCtrl" al-collapsable al-draggable="top">
         <ul>
             <li ng-repeat="c in alphabet">
                 <input type="text" class="invalid-{{ !c.valid }}" ng-model="c.value" ng-change="validate(c)" />
@@ -20,7 +20,7 @@
         
     </div>
     
-    <div id="tape" ng-controller="TapeCtrl" al-collapsable>
+    <div id="tape" ng-controller="TapeCtrl" al-collapsable al-draggable="bottom">
         <ul class="controls">
             <li><a href="" ng-click="rewind()">|&lt;&lt;</a></li>
             <li><a href="" ng-click="back()">&lt;</a></li>
