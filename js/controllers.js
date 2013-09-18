@@ -55,16 +55,15 @@ function StateCtrl($scope, $rootScope) {
     };
 }
 function TapeCtrl($scope, $rootScope) {
+    $scope.document = document;
     $scope.active = 10;
-    $scope.doc = document;
-    $scope.moretape = function(toLeft) {
-        if (toLeft === true) {
-            $scope.tape.unshift({"character": $scope.symbols.BLANK});
-            $scope.active++;
-        } else {
-            $scope.tape.push({"character": $scope.symbols.BLANK});
-        }
-    };
+    $scope.growLeft = function() {
+        $scope.tape.unshift(new Cell($rootScope.symbols.BLANK));
+        $scope.active++;
+    }
+    $scope.growRight = function() {
+        $scope.tape.push(new Cell($rootScope.symbols.BLANK));
+    }
     $scope.edit = function(cell) {
         $rootScope.$broadcast('tape-edit', cell);
     };
